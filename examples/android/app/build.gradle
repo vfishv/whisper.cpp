@@ -9,17 +9,28 @@ android {
 
     defaultConfig {
         applicationId "com.folderv.whisper"
-        minSdk 21
+        minSdk 26
         targetSdk 33
         versionCode 1
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables {
+            useSupportLibrary true
+        }
+        externalNativeBuild {
+            cmake {
+                cppFlags "-std=c++11"
+                //arguments "-DANDROID_STL=c++_shared"
+                arguments "-DANDROID_STL=c++_static"
+            }
+        }
     }
 
     buildTypes {
         release {
-            minifyEnabled false
+            signingConfig signingConfigs.debug
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -29,6 +40,12 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
+    }
+    ndkVersion "25.1.8937393"
+    externalNativeBuild {
+        ndkBuild {
+            path 'src/main/jni/whisper/Android.mk'
+        }
     }
 }
 
